@@ -16,41 +16,26 @@
         input, textarea { width: 100%; padding: 14px; border: 1px solid #dfe4ea; border-radius: 12px; font-size: 15px; background: #fdfdfd; box-sizing: border-box; }
         .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: 800; font-size: 16px; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
         .btn-primary { background: var(--primary); color: white; }
-        .step { display: none; }
-        .step.active { display: block; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div id="step1" class="step active">
-            <h2><i class="fa-solid fa-paw"></i> Dados do Pet</h2>
-            <div class="input-group"><label>NOME DO PET</label><input type="text" id="nome_pet" placeholder="Ex: Thor"></div>
-            <div class="input-group"><label>RAÇA / COR</label><input type="text" id="raca" placeholder="Ex: Vira-lata caramelo"></div>
-            <div class="input-group"><label>SEU NOME (DONO)</label><input type="text" id="nome_dono" placeholder="Seu nome"></div>
-            <div class="input-group"><label>WHATSAPP (DDD+NUMERO)</label><input type="tel" id="whatsapp" placeholder="11999999999"></div>
-            <div class="input-group"><label>MENSAGEM DE ALERTA</label><textarea id="mensagem" rows="2" placeholder="Ex: Tenho medo de fogos..."></textarea></div>
-            <button class="btn btn-primary" id="btn-send" onclick="sendData()">CONFIRMAR E RECEBER <i class="fa-solid fa-check"></i></button>
-        </div>
-
-        <div id="step2" class="step" style="text-align: center; padding: 40px 0;">
-            <i class="fa-regular fa-circle-check" style="font-size: 60px; color: #2ED573; margin-bottom: 20px;"></i>
-            <h2>Tudo Certo!</h2>
-            <p>Seu RG Digital foi gerado.</p>
-            <p><strong>Verifique seu WhatsApp</strong> em 1 minuto para pegar o QR Code.</p>
-        </div>
+        <h2><i class="fa-solid fa-paw"></i> Dados do Pet</h2>
+        <div class="input-group"><label>NOME DO PET</label><input type="text" id="nome_pet" placeholder="Ex: Thor"></div>
+        <div class="input-group"><label>RAÇA / COR</label><input type="text" id="raca" placeholder="Ex: Vira-lata caramelo"></div>
+        <div class="input-group"><label>SEU NOME (DONO)</label><input type="text" id="nome_dono" placeholder="Seu nome"></div>
+        <div class="input-group"><label>WHATSAPP (DDD+NUMERO)</label><input type="tel" id="whatsapp" placeholder="11999999999"></div>
+        <div class="input-group"><label>MENSAGEM DE ALERTA</label><textarea id="mensagem" rows="2" placeholder="Ex: Tenho medo de fogos..."></textarea></div>
+        <button class="btn btn-primary" id="btn-send" onclick="sendData()">GERAR RG AGORA <i class="fa-solid fa-arrow-right"></i></button>
     </div>
 
     <script>
-        // *** SEU WEBHOOK NOVO AQUI ***
         const MAKE_WEBHOOK = "https://hook.us1.make.com/7d13aekm6qci4rqnpzpnp884i46qatpm"; 
 
         function sendData() {
-            const btn = document.getElementById('btn-send');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
-            btn.disabled = true;
-
-            const payload = {
+            // 1. Pega os dados
+            const dados = {
                 nome_pet: document.getElementById('nome_pet').value,
                 raca: document.getElementById('raca').value,
                 nome_dono: document.getElementById('nome_dono').value,
@@ -58,25 +43,28 @@
                 mensagem: document.getElementById('mensagem').value
             };
 
+            // Validação simples
+            if(!dados.nome_pet || !dados.whatsapp) { alert("Preencha o Nome e o WhatsApp!"); return; }
+
+            const btn = document.getElementById('btn-send');
+            btn.innerHTML = '⏳ Gerando...';
+            btn.disabled = true;
+
+            // 2. Manda pro Make (Modo "no-cors" para não dar erro de rede)
             fetch(MAKE_WEBHOOK, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => {
-                if(res.ok) {
-                    document.getElementById('step1').classList.remove('active');
-                    document.getElementById('step2').classList.add('active');
-                } else {
-                    throw new Error('Erro no Make');
-                }
-            })
-            .catch(err => {
-                alert("Erro ao enviar. Verifique sua internet ou tente novamente.");
-                btn.innerHTML = 'CONFIRMAR E RECEBER';
-                btn.disabled = false;
-                console.error(err);
+                body: JSON.stringify(dados),
+                mode: 'no-cors' // O SEGREDO: Manda e não espera resposta
             });
+
+            // 3. Redireciona o Cliente IMEDIATAMENTE para a página do RG
+            // A gente monta o link aqui mesmo e já manda ele pra lá
+            setTimeout(() => {
+                const urlDestino = `https://ashleymasterbr.github.io/template.html?nome=${encodeURIComponent(dados.nome_pet)}&raca=${encodeURIComponent(dados.raca)}&dono=${encodeURIComponent(dados.nome_dono)}&zap=${dados.whatsapp}&msg=${encodeURIComponent(dados.mensagem)}`;
+                
+                window.location.href = urlDestino;
+            }, 1000);
         }
     </script>
 </body>
