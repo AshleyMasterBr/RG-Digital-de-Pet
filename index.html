@@ -3,268 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cadastro | RG Digital do Pet</title>
-    
+    <title>RG Digital Pet | Cadastro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #FF4757;
-            --dark: #1e272e;
-            --surface: #ffffff;
-            --gray: #dfe4ea;
-            --text: #2f3542;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-        body {
-            background-color: #f1f2f6;
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .form-container {
-            width: 100%;
-            max-width: 480px;
-            background: var(--surface);
-            border-radius: 24px;
-            padding: 32px 24px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-        }
-
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-size: 24px; color: var(--dark); font-weight: 800; margin-bottom: 8px; }
-        .header p { color: #747d8c; font-size: 14px; }
-
-        /* UPLOAD FOTO */
-        .photo-upload {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 30px auto;
-            border-radius: 50%;
-            background: #f1f2f6;
-            border: 2px dashed #a4b0be;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        .photo-upload:hover { border-color: var(--primary); background: #ffeaa7; }
+        :root { --primary: #FF4757; --dark: #2f3542; --bg: #f1f2f6; }
+        body { background: var(--bg); font-family: 'Inter', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 450px; background: white; border-radius: 24px; padding: 30px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         
-        .photo-upload i { font-size: 24px; color: #a4b0be; z-index: 1; }
-        .photo-upload img { 
-            position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 2; display: none; 
-        }
+        /* Estilos do Form */
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.5s; }
+        h2 { text-align: center; color: var(--dark); margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #57606f; }
+        input, textarea, select { width: 100%; padding: 14px; border: 1px solid #dfe4ea; border-radius: 12px; font-size: 15px; background: #fdfdfd; box-sizing: border-box; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: 800; font-size: 16px; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-sec { background: #dfe4ea; color: var(--dark); margin-top: 10px; }
 
-        /* INPUTS */
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--dark); }
+        /* Preview Card (Miniatura) */
+        .preview-card { background: #fff; border: 1px solid #eee; border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .p-photo { width: 100%; height: 250px; object-fit: cover; background: #eee; }
+        .p-info { padding: 20px; text-align: center; }
+        .p-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; margin-bottom: 10px; }
         
-        input, select, textarea {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid var(--gray);
-            border-radius: 12px;
-            font-size: 15px;
-            outline: none;
-            transition: 0.2s;
-            background: #fdfdfd;
-        }
+        /* QR Mockup */
+        .qr-mockup { text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 16px; border: 2px dashed #dcdde1; }
+        .qr-mockup img { width: 120px; mix-blend-mode: multiply; }
+        .qr-desc { font-size: 12px; color: #747d8c; margin-top: 10px; }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
-        }
-
-        /* CHECKBOX */
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #fff0f1;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid #ffccd0;
-        }
-        .checkbox-group input { width: 20px; height: 20px; margin: 0; }
-        .checkbox-group label { margin: 0; color: var(--primary); cursor: pointer; }
-
-        /* BOTÃO */
-        .btn-submit {
-            width: 100%;
-            padding: 18px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: transform 0.2s;
-        }
-
-        .btn-submit:active { transform: scale(0.98); }
-        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
-
-        /* MENSAGEM SUCESSO */
-        #success-message {
-            display: none;
-            text-align: center;
-            padding: 40px 20px;
-        }
-        #success-message i { font-size: 50px; color: #2ed573; margin-bottom: 20px; }
-        #success-message h2 { margin-bottom: 10px; }
-
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div class="form-container">
+    <div class="container">
         
-        <form id="pet-form">
-            <div class="header">
-                <h1>Criar RG Digital</h1>
-                <p>Preencha os dados para gerar o QR Code.</p>
-            </div>
-
-            <div class="photo-upload" onclick="document.getElementById('foto').click()">
-                <i class="fa-solid fa-camera"></i>
-                <img id="preview-img">
-                <input type="file" id="foto" accept="image/*" style="display: none;" required onchange="previewFile()">
-            </div>
-
+        <div id="step1" class="step active">
+            <h2><i class="fa-solid fa-paw"></i> Dados do Pet</h2>
+            
             <div class="input-group">
-                <label>NOME DO PET</label>
-                <input type="text" name="nome_pet" placeholder="Ex: Thor" required>
+                <label>FOTO DO PET</label>
+                <input type="file" id="foto" accept="image/*" onchange="previewImage()">
             </div>
+            <div class="input-group"><label>NOME DO PET</label><input type="text" id="nome_pet" placeholder="Ex: Thor"></div>
+            <div class="input-group"><label>RAÇA / COR</label><input type="text" id="raca" placeholder="Ex: Vira-lata caramelo"></div>
+            <div class="input-group"><label>SEU NOME (DONO)</label><input type="text" id="nome_dono" placeholder="Seu nome"></div>
+            <div class="input-group"><label>WHATSAPP (DDD+NUMERO)</label><input type="tel" id="whatsapp" placeholder="11999999999"></div>
+            <div class="input-group"><label>MENSAGEM DE ALERTA</label><textarea id="mensagem" rows="2" placeholder="Ex: Tenho medo de fogos..."></textarea></div>
+            <div class="input-group"><label>SEU E-MAIL (Para receber o QR)</label><input type="email" id="email" placeholder="email@exemplo.com"></div>
 
-            <div class="input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div>
-                    <label>RAÇA</label>
-                    <input type="text" name="raca" placeholder="Ex: Vira-lata" required>
+            <button class="btn btn-primary" onclick="goToPreview()">GERAR PREVIEW <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+
+        <div id="step2" class="step">
+            <h2>Confirme os Dados</h2>
+            
+            <div class="preview-card">
+                <div style="position: relative;">
+                    <img id="prev-img" class="p-photo">
+                    <div style="position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: #FF4757; color: white; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">ME PERDI</div>
                 </div>
-                <div>
-                    <label>SEXO</label>
-                    <select name="sexo">
-                        <option value="Macho">Macho</option>
-                        <option value="Fêmea">Fêmea</option>
-                    </select>
+                <div class="p-info">
+                    <h2 id="prev-nome" style="margin: 0;">Nome</h2>
+                    <p id="prev-desc" style="color: #777; margin: 5px 0;">Raça</p>
+                    <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; font-size: 13px; margin-top: 10px;">
+                        <i class="fa-solid fa-triangle-exclamation"></i> <span id="prev-msg">Alerta</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="input-group">
-                <label>NOME DO DONO (VOCÊ)</label>
-                <input type="text" name="nome_dono" placeholder="Seu nome completo" required>
+            <div class="qr-mockup">
+                <p style="font-size: 14px; font-weight: bold; margin-bottom: 10px;">Seu QR Code ficará assim:</p>
+                <img id="qr-preview" src="">
+                <p class="qr-desc">Apontando para: <strong>rg-pet.com/thor</strong></p>
             </div>
 
-            <div class="input-group">
-                <label>WHATSAPP (COM DDD)</label>
-                <input type="tel" name="whatsapp" placeholder="Ex: 11999999999" required>
-            </div>
+            <button class="btn btn-primary" id="btn-send" onclick="sendData()">CONFIRMAR E RECEBER <i class="fa-solid fa-check"></i></button>
+            <button class="btn btn-sec" onclick="backToForm()">Voltar e Editar</button>
+        </div>
 
-            <div class="input-group checkbox-group">
-                <input type="checkbox" id="remedio" name="toma_remedio">
-                <label for="remedio">Toma algum remédio controlado?</label>
-            </div>
-
-            <div class="input-group">
-                <label>MENSAGEM DE ALERTA (OPCIONAL)</label>
-                <textarea name="mensagem" rows="3" placeholder="Ex: Sou dócil mas tenho medo de barulho..."></textarea>
-            </div>
-
-            <input type="hidden" name="imagem_base64" id="base64-output">
-            <input type="email" name="email_cliente" placeholder="Seu E-mail para receber o QR Code" required style="margin-bottom: 20px;">
-
-            <button type="submit" class="btn-submit" id="btn-enviar">
-                GERAR MEU QR CODE <i class="fa-solid fa-qrcode"></i>
-            </button>
-        </form>
-
-        <div id="success-message">
-            <i class="fa-regular fa-circle-check"></i>
-            <h2>Tudo Pronto!</h2>
-            <p>Recebemos seus dados. Em até 2 minutos o QR Code chegará no seu e-mail.</p>
+        <div id="step3" class="step" style="text-align: center; padding: 40px 0;">
+            <i class="fa-regular fa-circle-check" style="font-size: 60px; color: #2ED573; margin-bottom: 20px;"></i>
+            <h2>Tudo Certo!</h2>
+            <p style="color: #666;">Seu RG Digital foi criado.</p>
+            <p><strong>Verifique seu WhatsApp e E-mail</strong> em 1 minuto para pegar o QR Code oficial.</p>
         </div>
 
     </div>
 
     <script>
-        // CONFIGURAÇÃO: Coloque seu Link do Make AQUI
-        const WEBHOOK_URL = "https://hook.us1.make.com/7d13aekm6qci4rqnpzpnp884i46qatpm";
+        // *** CONFIGURAÇÃO ***
+        // Coloque aqui o seu Webhook do Make (o link https://...)
+        const MAKE_WEBHOOK = "https://hook.us1.make.com/6380jr698hnyx1pkc4tour4bdq6zxt2x"; 
 
-        // Função para mostrar preview da foto e converter para Base64
-        function previewFile() {
-            const preview = document.getElementById('preview-img');
+        let base64String = "";
+
+        // 1. Processar Foto
+        function previewImage() {
             const file = document.getElementById('foto').files[0];
             const reader = new FileReader();
-
-            reader.addEventListener("load", function () {
-                // Mostra preview
-                preview.src = reader.result;
-                preview.style.display = 'block';
-                
-                // Salva o Base64 no input oculto para enviar pro Make
-                document.getElementById('base64-output').value = reader.result;
-            }, false);
-
-            if (file) {
-                reader.readAsDataURL(file);
+            reader.onloadend = function() {
+                base64String = reader.result;
+                document.getElementById('prev-img').src = base64String;
             }
+            if(file) reader.readAsDataURL(file);
         }
 
-        // Envio do Formulário
-        document.getElementById('pet-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // 2. Navegação (Form -> Preview)
+        function goToPreview() {
+            // Pega valores
+            const nome = document.getElementById('nome_pet').value;
+            const zap = document.getElementById('whatsapp').value;
             
-            const btn = document.getElementById('btn-enviar');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
+            if(!nome || !zap) { alert("Preencha pelo menos Nome e WhatsApp!"); return; }
+
+            // Preenche o Preview
+            document.getElementById('prev-nome').innerText = nome;
+            document.getElementById('prev-desc').innerText = document.getElementById('raca').value;
+            document.getElementById('prev-msg').innerText = document.getElementById('mensagem').value || "Sem alertas médicos.";
+
+            // Gera Mockup do QR Code (Apenas visual, com dados de texto)
+            // Note: Não colocamos a foto na URL do QR Code de preview pra não quebrar, só texto.
+            const qrData = `https://ashleymasterbr.github.io/pets/template.html?nome=${encodeURIComponent(nome)}&zap=${zap}`;
+            document.getElementById('qr-preview').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
+
+            // Troca de tela
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+        }
+
+        function backToForm() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+        }
+
+        // 3. Enviar para o Make
+        function sendData() {
+            const btn = document.getElementById('btn-send');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
             btn.disabled = true;
 
-            // Coleta dados
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData.entries());
+            const payload = {
+                nome_pet: document.getElementById('nome_pet').value,
+                raca: document.getElementById('raca').value,
+                nome_dono: document.getElementById('nome_dono').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                mensagem: document.getElementById('mensagem').value,
+                email_cliente: document.getElementById('email').value,
+                imagem_base64: base64String // Manda a foto pesada pro Make resolver
+            };
 
-            // Check se tem foto
-            if(!data.imagem_base64) {
-                alert("Por favor, escolha uma foto do Pet!");
-                btn.innerHTML = 'GERAR MEU QR CODE';
-                btn.disabled = false;
-                return;
-            }
-
-            // Envia pro Make
-            fetch(WEBHOOK_URL, {
+            fetch(MAKE_WEBHOOK, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(payload)
             })
-            .then(response => {
-                // Esconde form e mostra sucesso
-                document.getElementById('pet-form').style.display = 'none';
-                document.getElementById('success-message').style.display = 'block';
+            .then(res => {
+                document.getElementById('step2').classList.remove('active');
+                document.getElementById('step3').classList.add('active');
             })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert("Ocorreu um erro. Tente novamente.");
-                btn.innerHTML = 'Tentar Novamente';
+            .catch(err => {
+                alert("Erro ao enviar. Tente novamente.");
+                btn.innerHTML = 'CONFIRMAR E RECEBER';
                 btn.disabled = false;
             });
-        });
+        }
     </script>
 
 </body>
