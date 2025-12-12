@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cadastro | RG Digital do Pet</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #FF4757;
+            --dark: #1e272e;
+            --surface: #ffffff;
+            --gray: #dfe4ea;
+            --text: #2f3542;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #f1f2f6;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        }
+
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 24px; color: var(--dark); font-weight: 800; margin-bottom: 8px; }
+        .header p { color: #747d8c; font-size: 14px; }
+
+        /* UPLOAD FOTO */
+        .photo-upload {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px auto;
+            border-radius: 50%;
+            background: #f1f2f6;
+            border: 2px dashed #a4b0be;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .photo-upload:hover { border-color: var(--primary); background: #ffeaa7; }
+        
+        .photo-upload i { font-size: 24px; color: #a4b0be; z-index: 1; }
+        .photo-upload img { 
+            position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 2; display: none; 
+        }
+
+        /* INPUTS */
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--dark); }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid var(--gray);
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+            background: #fdfdfd;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
+        }
+
+        /* CHECKBOX */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff0f1;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #ffccd0;
+        }
+        .checkbox-group input { width: 20px; height: 20px; margin: 0; }
+        .checkbox-group label { margin: 0; color: var(--primary); cursor: pointer; }
+
+        /* BOTÃO */
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:active { transform: scale(0.98); }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* MENSAGEM SUCESSO */
+        #success-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        #success-message i { font-size: 50px; color: #2ed573; margin-bottom: 20px; }
+        #success-message h2 { margin-bottom: 10px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        
+        <form id="pet-form">
+            <div class="header">
+                <h1>Criar RG Digital</h1>
+                <p>Preencha os dados para gerar o QR Code.</p>
+            </div>
+
+            <div class="photo-upload" onclick="document.getElementById('foto').click()">
+                <i class="fa-solid fa-camera"></i>
+                <img id="preview-img">
+                <input type="file" id="foto" accept="image/*" style="display: none;" required onchange="previewFile()">
+            </div>
+
+            <div class="input-group">
+                <label>NOME DO PET</label>
+                <input type="text" name="nome_pet" placeholder="Ex: Thor" required>
+            </div>
+
+            <div class="input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label>RAÇA</label>
+                    <input type="text" name="raca" placeholder="Ex: Vira-lata" required>
+                </div>
+                <div>
+                    <label>SEXO</label>
+                    <select name="sexo">
+                        <option value="Macho">Macho</option>
+                        <option value="Fêmea">Fêmea</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>NOME DO DONO (VOCÊ)</label>
+                <input type="text" name="nome_dono" placeholder="Seu nome completo" required>
+            </div>
+
+            <div class="input-group">
+                <label>WHATSAPP (COM DDD)</label>
+                <input type="tel" name="whatsapp" placeholder="Ex: 11999999999" required>
+            </div>
+
+            <div class="input-group checkbox-group">
+                <input type="checkbox" id="remedio" name="toma_remedio">
+                <label for="remedio">Toma algum remédio controlado?</label>
+            </div>
+
+            <div class="input-group">
+                <label>MENSAGEM DE ALERTA (OPCIONAL)</label>
+                <textarea name="mensagem" rows="3" placeholder="Ex: Sou dócil mas tenho medo de barulho..."></textarea>
+            </div>
+
+            <input type="hidden" name="imagem_base64" id="base64-output">
+            <input type="email" name="email_cliente" placeholder="Seu E-mail para receber o QR Code" required style="margin-bottom: 20px;">
+
+            <button type="submit" class="btn-submit" id="btn-enviar">
+                GERAR MEU QR CODE <i class="fa-solid fa-qrcode"></i>
+            </button>
+        </form>
+
+        <div id="success-message">
+            <i class="fa-regular fa-circle-check"></i>
+            <h2>Tudo Pronto!</h2>
+            <p>Recebemos seus dados. Em até 2 minutos o QR Code chegará no seu e-mail.</p>
+        </div>
+
+    </div>
+
+    <script>
+        // CONFIGURAÇÃO: Coloque seu Link do Make AQUI
+        const WEBHOOK_URL = "https://hook.us1.make.com/SEU_CODIGO_AQUI";
+
+        // Função para mostrar preview da foto e converter para Base64
+        function previewFile() {
+            const preview = document.getElementById('preview-img');
+            const file = document.getElementById('foto').files[0];
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                // Mostra preview
+                preview.src = reader.result;
+                preview.style.display = 'block';
+                
+                // Salva o Base64 no input oculto para enviar pro Make
+                document.getElementById('base64-output').value = reader.result;
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Envio do Formulário
+        document.getElementById('pet-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btn-enviar');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
+            btn.disabled = true;
+
+            // Coleta dados
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            // Check se tem foto
+            if(!data.imagem_base64) {
+                alert("Por favor, escolha uma foto do Pet!");
+                btn.innerHTML = 'GERAR MEU QR CODE';
+                btn.disabled = false;
+                return;
+            }
+
+            // Envia pro Make
+            fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                // Esconde form e mostra sucesso
+                document.getElementById('pet-form').style.display = 'none';
+                document.getElementById('success-message').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert("Ocorreu um erro. Tente novamente.");
+                btn.innerHTML = 'Tentar Novamente';
+                btn.disabled = false;
+            });
+        });
+    </script>
+
+</body>
+</html>
