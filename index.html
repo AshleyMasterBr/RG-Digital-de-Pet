@@ -3,38 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RG Digital Pet | Cadastro</title>
+    <title>RG Digital Pet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #FF4757; --dark: #2f3542; --bg: #f1f2f6; }
-        body { background: var(--bg); font-family: 'Inter', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 450px; background: white; border-radius: 24px; padding: 30px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        h2 { text-align: center; color: var(--dark); margin-bottom: 20px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #57606f; }
-        input, textarea { width: 100%; padding: 14px; border: 1px solid #dfe4ea; border-radius: 12px; font-size: 15px; background: #fdfdfd; box-sizing: border-box; }
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: 800; font-size: 16px; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
-        .btn-primary { background: var(--primary); color: white; }
+        body { background: #f1f2f6; font-family: 'Inter', sans-serif; padding: 20px; display: flex; justify-content: center; margin: 0; }
+        .container { background: white; width: 100%; max-width: 400px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; padding-bottom: 20px; }
+        
+        /* ESTILOS DO FORMULÁRIO */
+        #form-view { padding: 30px; }
+        input, textarea { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; }
+        .btn { width: 100%; padding: 16px; background: #FF4757; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        
+        /* ESTILOS DO RG (CARTÃO) */
+        #card-view { display: none; text-align: center; }
+        .photo-area { width: 100%; height: 280px; background: #FF4757; display: flex; align-items: center; justify-content: center; color: white; flex-direction: column; }
+        .photo-area i { font-size: 80px; margin-bottom: 10px; }
+        .info { padding: 20px; }
+        h1 { margin: 0; color: #2d3436; font-size: 32px; }
+        p { color: #636e72; margin: 5px 0; font-size: 18px; }
+        .alert-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 10px; margin: 20px 0; font-weight: bold; display: none; }
+        .action-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; padding: 16px; border-radius: 16px; text-decoration: none; font-weight: bold; color: white; font-size: 18px; margin: 10px auto; }
+        .zap { background: #2ED573; }
+        .call { background: #FF4757; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2><i class="fa-solid fa-paw"></i> Dados do Pet</h2>
-        <div class="input-group"><label>NOME DO PET</label><input type="text" id="nome_pet" placeholder="Ex: Thor"></div>
-        <div class="input-group"><label>RAÇA / COR</label><input type="text" id="raca" placeholder="Ex: Vira-lata caramelo"></div>
-        <div class="input-group"><label>SEU NOME (DONO)</label><input type="text" id="nome_dono" placeholder="Seu nome"></div>
-        <div class="input-group"><label>WHATSAPP (DDD+NUMERO)</label><input type="tel" id="whatsapp" placeholder="11999999999"></div>
-        <div class="input-group"><label>MENSAGEM DE ALERTA</label><textarea id="mensagem" rows="2" placeholder="Ex: Tenho medo de fogos..."></textarea></div>
-        <button class="btn btn-primary" id="btn-send" onclick="sendData()">GERAR RG AGORA <i class="fa-solid fa-arrow-right"></i></button>
+        
+        <div id="form-view">
+            <h2 style="text-align: center; color: #333;">Criar RG do Pet 🐾</h2>
+            <input type="text" id="nome_pet" placeholder="Nome do Pet (Ex: Thor)">
+            <input type="text" id="raca" placeholder="Raça / Cor">
+            <input type="text" id="nome_dono" placeholder="Seu Nome">
+            <input type="tel" id="whatsapp" placeholder="WhatsApp (DDD + Número)">
+            <textarea id="mensagem" rows="3" placeholder="Mensagem de Alerta (Ex: Preciso de remédio)"></textarea>
+            <button class="btn" id="btn-send" onclick="salvar()">GERAR RG AGORA 🚀</button>
+        </div>
+
+        <div id="card-view">
+            <div class="photo-area">
+                <i class="fa-solid fa-paw"></i>
+                <h3>ME PERDI</h3>
+            </div>
+            <div class="info">
+                <h1 id="view-nome">...</h1>
+                <p id="view-desc">...</p>
+                
+                <div id="view-alert" class="alert-box"></div>
+                
+                <p style="font-size: 14px; margin-top: 20px; color: #b2bec3; text-transform: uppercase; font-weight: bold;">Responsável</p>
+                <p id="view-dono" style="font-weight: bold; color: #333;">...</p>
+                
+                <br>
+                <a id="btn-zap" href="#" class="action-btn zap"><i class="fa-brands fa-whatsapp"></i> AVISAR NO ZAP</a>
+                <a id="btn-call" href="#" class="action-btn call"><i class="fa-solid fa-phone"></i> LIGAR AGORA</a>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        const MAKE_WEBHOOK = "https://hook.us1.make.com/7d13aekm6qci4rqnpzpnp884i46qatpm"; 
+        // *** SEU WEBHOOK DO MAKE ***
+        const MAKE_URL = "https://hook.us1.make.com/7d13aekm6qci4rqnpzpnp884i46qatpm"; 
 
-        function sendData() {
-            // 1. Pega os dados
+        // Lógica Principal: Verifica se tem dados na URL
+        const params = new URLSearchParams(window.location.search);
+        const get = (id) => params.get(id);
+
+        if (get('nome')) {
+            // MODO RG: Esconde formulário e mostra cartão
+            document.getElementById('form-view').style.display = 'none';
+            document.getElementById('card-view').style.display = 'block';
+
+            // Preenche dados
+            document.getElementById('view-nome').innerText = get('nome');
+            document.getElementById('view-desc').innerText = get('raca');
+            document.getElementById('view-dono').innerText = get('dono');
+
+            if(get('msg') && get('msg') !== "undefined") {
+                const alerta = document.getElementById('view-alert');
+                alerta.innerText = "⚠️ " + get('msg');
+                alerta.style.display = 'block';
+            }
+
+            const zap = get('zap').replace(/\D/g, '');
+            document.getElementById('btn-call').href = `tel:55${zap}`;
+            document.getElementById('btn-zap').href = `https://wa.me/55${zap}?text=Olá! Encontrei o ${get('nome')}!`;
+
+        } else {
+            // MODO FORMULÁRIO: Deixa como está
+        }
+
+        // Função de Enviar
+        function salvar() {
+            const btn = document.getElementById('btn-send');
+            btn.innerHTML = "⏳ Gerando...";
+            btn.disabled = true;
+
             const dados = {
                 nome_pet: document.getElementById('nome_pet').value,
                 raca: document.getElementById('raca').value,
@@ -43,27 +110,22 @@
                 mensagem: document.getElementById('mensagem').value
             };
 
-            // Validação simples
-            if(!dados.nome_pet || !dados.whatsapp) { alert("Preencha o Nome e o WhatsApp!"); return; }
+            if(!dados.nome_pet || !dados.whatsapp) { alert("Preencha Nome e Zap!"); btn.disabled=false; btn.innerHTML="Tentar de novo"; return; }
 
-            const btn = document.getElementById('btn-send');
-            btn.innerHTML = '⏳ Gerando...';
-            btn.disabled = true;
-
-            // 2. Manda pro Make (Modo "no-cors" para não dar erro de rede)
-            fetch(MAKE_WEBHOOK, {
+            // Envia pro Make (Sem esperar resposta pra ser rápido)
+            fetch(MAKE_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(dados),
-                mode: 'no-cors' // O SEGREDO: Manda e não espera resposta
+                mode: 'no-cors'
             });
 
-            // 3. Redireciona o Cliente IMEDIATAMENTE para a página do RG
-            // A gente monta o link aqui mesmo e já manda ele pra lá
+            // Redireciona para a PRÓPRIA PÁGINA com os parâmetros
             setTimeout(() => {
-                const urlDestino = `https://ashleymasterbr.github.io/template.html?nome=${encodeURIComponent(dados.nome_pet)}&raca=${encodeURIComponent(dados.raca)}&dono=${encodeURIComponent(dados.nome_dono)}&zap=${dados.whatsapp}&msg=${encodeURIComponent(dados.mensagem)}`;
+                const urlBase = window.location.href.split('?')[0]; // Pega a url limpa
+                const urlFinal = `${urlBase}?nome=${encodeURIComponent(dados.nome_pet)}&raca=${encodeURIComponent(dados.raca)}&dono=${encodeURIComponent(dados.nome_dono)}&zap=${dados.whatsapp}&msg=${encodeURIComponent(dados.mensagem)}`;
                 
-                window.location.href = urlDestino;
+                window.location.href = urlFinal;
             }, 1000);
         }
     </script>
