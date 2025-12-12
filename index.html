@@ -3,29 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RG Digital Pet</title>
+    <title>RG Digital Pet | Oficial</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background: #f1f2f6; font-family: 'Inter', sans-serif; padding: 20px; display: flex; justify-content: center; margin: 0; }
-        .container { background: white; width: 100%; max-width: 400px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; padding-bottom: 20px; }
+        :root { --primary: #FF4757; --dark: #2f3542; --bg: #f1f2f6; }
+        body { background: var(--bg); font-family: 'Inter', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 420px; background: white; border-radius: 24px; padding: 30px 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); height: fit-content; }
         
-        /* ESTILOS DO FORMULÁRIO */
-        #form-view { padding: 30px; }
-        input, textarea { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; }
-        .btn { width: 100%; padding: 16px; background: #FF4757; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        /* --- ESTILOS DO FORMULÁRIO --- */
+        h2 { text-align: center; color: var(--dark); margin-bottom: 25px; font-size: 22px; }
+        .input-group { margin-bottom: 18px; }
+        label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #a4b0be; letter-spacing: 0.5px; }
+        input, textarea { width: 100%; padding: 14px; border: 2px solid #f1f2f6; border-radius: 14px; font-size: 15px; background: #fdfdfd; box-sizing: border-box; transition: 0.3s; color: var(--dark); }
+        input:focus, textarea:focus { border-color: var(--primary); outline: none; }
         
-        /* ESTILOS DO RG (CARTÃO) */
+        /* Upload Bonito */
+        .photo-upload { width: 100px; height: 100px; background: #f1f2f6; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px dashed #ccc; overflow: hidden; position: relative; }
+        .photo-upload i { font-size: 24px; color: #ccc; }
+        .photo-upload img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        
+        .btn { width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 14px; font-weight: 800; font-size: 16px; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 71, 87, 0.3); transition: transform 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn:active { transform: scale(0.98); }
+
+        /* --- ESTILOS DO RG (CARTÃO) --- */
         #card-view { display: none; text-align: center; }
-        .photo-area { width: 100%; height: 280px; background: #FF4757; display: flex; align-items: center; justify-content: center; color: white; flex-direction: column; }
-        .photo-area i { font-size: 80px; margin-bottom: 10px; }
-        .info { padding: 20px; }
-        h1 { margin: 0; color: #2d3436; font-size: 32px; }
-        p { color: #636e72; margin: 5px 0; font-size: 18px; }
-        .alert-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 10px; margin: 20px 0; font-weight: bold; display: none; }
-        .action-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; padding: 16px; border-radius: 16px; text-decoration: none; font-weight: bold; color: white; font-size: 18px; margin: 10px auto; }
-        .zap { background: #2ED573; }
-        .call { background: #FF4757; }
+        .rg-header { margin: -30px -25px 20px -25px; height: 220px; background: #FF4757; position: relative; display: flex; align-items: center; justify-content: center; border-radius: 24px 24px 40px 40px; overflow: hidden; }
+        .rg-photo { width: 100%; height: 100%; object-fit: cover; }
+        .rg-icon { font-size: 80px; color: rgba(255,255,255,0.5); }
+        .badge { position: absolute; bottom: 20px; background: white; color: var(--primary); padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .rg-info h1 { margin: 0; font-size: 32px; color: var(--dark); }
+        .rg-info p { color: #747d8c; margin: 5px 0 20px; font-size: 16px; }
+        
+        .alert-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; display: none; border-left: 4px solid #ffeeba; text-align: left; }
+        
+        .owner-box { text-align: left; background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+        .owner-label { font-size: 11px; font-weight: bold; color: #a4b0be; text-transform: uppercase; }
+        .owner-name { font-weight: 700; color: var(--dark); font-size: 15px; }
+
+        .action-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; border-radius: 14px; text-decoration: none; font-weight: bold; color: white; font-size: 16px; margin-bottom: 10px; box-sizing: border-box; }
+        .zap { background: #2ED573; box-shadow: 0 5px 15px rgba(46, 213, 115, 0.3); }
+        .call { background: #FF4757; box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3); }
     </style>
 </head>
 <body>
@@ -33,86 +52,132 @@
     <div class="container">
         
         <div id="form-view">
-            <h2 style="text-align: center; color: #333;">Criar RG do Pet 🐾</h2>
-            <input type="text" id="nome_pet" placeholder="Nome do Pet (Ex: Thor)">
-            <input type="text" id="raca" placeholder="Raça / Cor">
-            <input type="text" id="nome_dono" placeholder="Seu Nome">
-            <input type="tel" id="whatsapp" placeholder="WhatsApp (DDD + Número)">
-            <textarea id="mensagem" rows="3" placeholder="Mensagem de Alerta (Ex: Preciso de remédio)"></textarea>
-            <button class="btn" id="btn-send" onclick="salvar()">GERAR RG AGORA 🚀</button>
+            <h2><i class="fa-solid fa-id-card"></i> Novo RG Digital</h2>
+            
+            <div class="photo-upload" onclick="document.getElementById('foto-input').click()">
+                <i class="fa-solid fa-camera"></i>
+                <img id="preview-img">
+                <input type="file" id="foto-input" accept="image/*" style="display: none;" onchange="carregarFoto()">
+            </div>
+
+            <div class="input-group"><label>NOME DO PET</label><input type="text" id="nome_pet" placeholder="Ex: Thor"></div>
+            <div class="input-group"><label>RAÇA / COR</label><input type="text" id="raca" placeholder="Ex: Vira-lata caramelo"></div>
+            <div class="input-group"><label>NOME DO DONO</label><input type="text" id="nome_dono" placeholder="Seu nome completo"></div>
+            <div class="input-group"><label>WHATSAPP (DDD + NÚMERO)</label><input type="tel" id="whatsapp" placeholder="11999999999"></div>
+            <div class="input-group"><label>E-MAIL (Para receber o QR)</label><input type="email" id="email" placeholder="seu@email.com"></div>
+            <div class="input-group"><label>ALERTA MÉDICO (Opcional)</label><textarea id="mensagem" rows="2" placeholder="Ex: Tenho alergia a frango..."></textarea></div>
+            
+            <button class="btn" id="btn-send" onclick="gerarRG()">GERAR RG AGORA <i class="fa-solid fa-rocket"></i></button>
         </div>
 
         <div id="card-view">
-            <div class="photo-area">
-                <i class="fa-solid fa-paw"></i>
-                <h3>ME PERDI</h3>
+            <div class="rg-header">
+                <img id="card-photo" class="rg-photo" style="display: none;">
+                <i id="card-icon" class="fa-solid fa-paw rg-icon"></i>
+                <div class="badge">ME PERDI</div>
             </div>
-            <div class="info">
-                <h1 id="view-nome">...</h1>
-                <p id="view-desc">...</p>
+            
+            <div class="rg-info">
+                <h1 id="view-nome">Nome</h1>
+                <p id="view-desc">Raça</p>
                 
                 <div id="view-alert" class="alert-box"></div>
                 
-                <p style="font-size: 14px; margin-top: 20px; color: #b2bec3; text-transform: uppercase; font-weight: bold;">Responsável</p>
-                <p id="view-dono" style="font-weight: bold; color: #333;">...</p>
+                <div class="owner-box">
+                    <div class="owner-label">RESPONSÁVEL</div>
+                    <div class="owner-name" id="view-dono">Nome do Dono</div>
+                </div>
                 
-                <br>
                 <a id="btn-zap" href="#" class="action-btn zap"><i class="fa-brands fa-whatsapp"></i> AVISAR NO ZAP</a>
                 <a id="btn-call" href="#" class="action-btn call"><i class="fa-solid fa-phone"></i> LIGAR AGORA</a>
+                
+                <p style="font-size: 12px; color: #ccc; margin-top: 15px;">RG Digital Seguro</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // *** SEU WEBHOOK DO MAKE ***
-        const MAKE_URL = "https://hook.us1.make.com/7d13aekm6qci4rqnpzpnp884i46qatpm"; 
+        const MAKE_URL = "https://hook.us1.make.com/7d13aekm6qci4rqnpzpnp884i46qatpm";
+        let fotoBase64 = null; // Guarda a foto na memória
 
-        // Lógica Principal: Verifica se tem dados na URL
+        // 1. Carregar Foto no Preview (Local)
+        function carregarFoto() {
+            const file = document.getElementById('foto-input').files[0];
+            if(file){
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    fotoBase64 = reader.result;
+                    document.getElementById('preview-img').src = fotoBase64;
+                    document.getElementById('preview-img').style.display = 'block';
+                    document.querySelector('.photo-upload i').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 2. Lógica de Rotas (URL vs Formulário)
         const params = new URLSearchParams(window.location.search);
         const get = (id) => params.get(id);
 
         if (get('nome')) {
-            // MODO RG: Esconde formulário e mostra cartão
+            // MODO RG (Acesso via QR Code)
+            mostrarRG(
+                get('nome'), 
+                get('raca'), 
+                get('dono'), 
+                get('zap'), 
+                get('msg'),
+                null // Sem foto via link (a menos que suba no futuro)
+            );
+        }
+
+        function mostrarRG(nome, raca, dono, zap, msg, foto) {
             document.getElementById('form-view').style.display = 'none';
             document.getElementById('card-view').style.display = 'block';
 
-            // Preenche dados
-            document.getElementById('view-nome').innerText = get('nome');
-            document.getElementById('view-desc').innerText = get('raca');
-            document.getElementById('view-dono').innerText = get('dono');
+            document.getElementById('view-nome').innerText = nome;
+            document.getElementById('view-desc').innerText = raca;
+            document.getElementById('view-dono').innerText = dono;
 
-            if(get('msg') && get('msg') !== "undefined") {
+            // Foto
+            if (foto) {
+                document.getElementById('card-photo').src = foto;
+                document.getElementById('card-photo').style.display = 'block';
+                document.getElementById('card-icon').style.display = 'none';
+            }
+
+            // Alerta
+            if (msg && msg !== "undefined" && msg !== "") {
                 const alerta = document.getElementById('view-alert');
-                alerta.innerText = "⚠️ " + get('msg');
+                alerta.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${msg}`;
                 alerta.style.display = 'block';
             }
 
-            const zap = get('zap').replace(/\D/g, '');
-            document.getElementById('btn-call').href = `tel:55${zap}`;
-            document.getElementById('btn-zap').href = `https://wa.me/55${zap}?text=Olá! Encontrei o ${get('nome')}!`;
-
-        } else {
-            // MODO FORMULÁRIO: Deixa como está
+            // Botões
+            const zapClean = zap.replace(/\D/g, '');
+            document.getElementById('btn-call').href = `tel:55${zapClean}`;
+            document.getElementById('btn-zap').href = `https://wa.me/55${zapClean}?text=Olá! Encontrei o ${nome}!`;
         }
 
-        // Função de Enviar
-        function salvar() {
-            const btn = document.getElementById('btn-send');
-            btn.innerHTML = "⏳ Gerando...";
-            btn.disabled = true;
-
+        // 3. Função Principal: Gerar e Enviar
+        function gerarRG() {
             const dados = {
                 nome_pet: document.getElementById('nome_pet').value,
                 raca: document.getElementById('raca').value,
                 nome_dono: document.getElementById('nome_dono').value,
                 whatsapp: document.getElementById('whatsapp').value,
+                email: document.getElementById('email').value,
                 mensagem: document.getElementById('mensagem').value
             };
 
-            if(!dados.nome_pet || !dados.whatsapp) { alert("Preencha Nome e Zap!"); btn.disabled=false; btn.innerHTML="Tentar de novo"; return; }
+            if(!dados.nome_pet || !dados.whatsapp) { alert("Preencha Nome e WhatsApp!"); return; }
 
-            // Envia pro Make (Sem esperar resposta pra ser rápido)
+            const btn = document.getElementById('btn-send');
+            btn.innerHTML = '⏳ Gerando Cartão...';
+            btn.disabled = true;
+
+            // Envia pro Make (Silencioso)
             fetch(MAKE_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -120,13 +185,16 @@
                 mode: 'no-cors'
             });
 
-            // Redireciona para a PRÓPRIA PÁGINA com os parâmetros
+            // Mostra o RG na tela NA HORA (Com a foto que ele acabou de subir)
             setTimeout(() => {
-                const urlBase = window.location.href.split('?')[0]; // Pega a url limpa
-                const urlFinal = `${urlBase}?nome=${encodeURIComponent(dados.nome_pet)}&raca=${encodeURIComponent(dados.raca)}&dono=${encodeURIComponent(dados.nome_dono)}&zap=${dados.whatsapp}&msg=${encodeURIComponent(dados.mensagem)}`;
+                mostrarRG(dados.nome_pet, dados.raca, dados.nome_dono, dados.whatsapp, dados.mensagem, fotoBase64);
                 
-                window.location.href = urlFinal;
-            }, 1000);
+                // Muda a URL sem recarregar (pra ficar bonito no navegador)
+                const novaUrl = `?nome=${encodeURIComponent(dados.nome_pet)}&raca=${encodeURIComponent(dados.raca)}&dono=${encodeURIComponent(dados.nome_dono)}&zap=${dados.whatsapp}&msg=${encodeURIComponent(dados.mensagem)}`;
+                window.history.pushState({}, '', novaUrl);
+                
+                alert("✨ RG Gerado com Sucesso! \nVerifique seu WhatsApp para o QR Code.");
+            }, 1500);
         }
     </script>
 </body>
