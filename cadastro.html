@@ -2,271 +2,85 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RG Digital | Thor</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RG Digital do Pet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #FF4757; /* Vermelho Emergência */
-            --secondary: #2ED573; /* Verde WhatsApp */
-            --dark: #1e272e;
-            --surface: #ffffff;
-            --text: #2f3542;
-            --gray: #a4b0be;
-            --radius: 24px;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            background-color: #f1f2f6;
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 480px; /* Limite Mobile */
-            background: var(--surface);
-            min-height: 100vh;
-            position: relative;
-            box-shadow: 0 0 40px rgba(0,0,0,0.1);
-            padding-bottom: 100px;
-        }
-
-        /* HEADER COM FOTO */
-        .pet-header {
-            position: relative;
-            height: 320px;
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-            overflow: hidden;
-            background: #eee;
-        }
-
-        .pet-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .status-badge {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 71, 87, 0.95);
-            color: white;
-            padding: 8px 24px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 14px;
-            letter-spacing: 1px;
-            box-shadow: 0 8px 16px rgba(255, 71, 87, 0.3);
-            animation: pulse 2s infinite;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        @keyframes pulse {
-            0% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.05); }
-            100% { transform: translateX(-50%) scale(1); }
-        }
-
-        /* INFO PRINCIPAL */
-        .info-card {
-            margin-top: -60px;
-            padding: 0 24px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .card-body {
-            background: white;
-            border-radius: var(--radius);
-            padding: 30px 24px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-
-        .pet-name { font-size: 32px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
-        .pet-breed { color: var(--gray); font-weight: 500; font-size: 16px; margin-bottom: 24px; }
-
-        .tags-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: #f1f2f6;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .tag.alert { background: #ffeaa7; color: #d35400; }
-
-        /* BOTOES DE AÇÃO FLUTUANTES (STICKY) */
-        .action-bar {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 440px;
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .btn {
-            flex: 1;
-            height: 56px;
-            border: none;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            text-decoration: none;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        .btn:active { transform: scale(0.96); }
-        
-        .btn-call { background: var(--primary); color: white; }
-        .btn-whats { background: var(--secondary); color: white; }
-
-        /* DETALHES EXTRAS */
-        .details-section {
-            padding: 40px 24px 120px 24px;
-        }
-
-        .detail-item {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            border: 1px solid #f1f2f6;
-        }
-
-        .icon-box {
-            width: 48px;
-            height: 48px;
-            background: #f1f2f6;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--dark);
-            font-size: 20px;
-        }
-
-        .detail-text h4 { font-size: 14px; color: var(--gray); margin-bottom: 4px; }
-        .detail-text p { font-size: 16px; font-weight: 600; color: var(--dark); }
-
-        .owner-message {
-            background: #e3f2fd;
-            border: 1px solid #90caf9;
-            color: #1565c0;
-            padding: 20px;
-            border-radius: 16px;
-            font-size: 15px;
-            line-height: 1.5;
-            margin-bottom: 24px;
-        }
-
+        /* (MANTENHA SEU CSS BONITO AQUI - Vou resumir pra caber) */
+        body { background: #f1f2f6; font-family: 'Inter', sans-serif; display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .card { background: white; width: 100%; max-width: 400px; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); text-align: center; padding-bottom: 30px; }
+        .photo-area { width: 100%; height: 320px; background: #ddd; position: relative; }
+        .photo-area img { width: 100%; height: 100%; object-fit: cover; }
+        .badge { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #FF4757; color: white; padding: 8px 20px; border-radius: 50px; font-weight: bold; font-size: 14px; box-shadow: 0 5px 15px rgba(255,71,87,0.4); animation: pulse 2s infinite; }
+        .info { padding: 0 25px; margin-top: -40px; position: relative; z-index: 10; }
+        .info-box { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        h1 { margin: 0 0 5px; color: #2d3436; font-size: 28px; }
+        p { color: #636e72; margin: 5px 0; }
+        .alert-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 12px; margin: 20px 0; font-size: 14px; border: 1px solid #ffeeba; display: none; } /* Oculto por padrão */
+        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; border-radius: 16px; text-decoration: none; font-weight: bold; color: white; font-size: 16px; margin-top: 10px; transition: transform 0.2s; }
+        .btn:active { transform: scale(0.98); }
+        .zap { background: #2ED573; box-shadow: 0 4px 15px rgba(46, 213, 115, 0.4); }
+        .call { background: #FF4757; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4); }
+        @keyframes pulse { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } 100% { transform: translateX(-50%) scale(1); } }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="card">
+        <div class="photo-area">
+            <div class="badge"><i class="fa-solid fa-triangle-exclamation"></i> ME PERDI</div>
+            <img id="pet-img" src="https://via.placeholder.com/400x400?text=Sem+Foto">
+        </div>
         
-        <header class="pet-header">
-            <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=1000&auto=format&fit=crop" alt="Foto do Pet" class="pet-photo">
-            
-            <div class="status-badge">
-                <i class="fa-solid fa-triangle-exclamation"></i> ME PERDI
-            </div>
-        </header>
-
-        <div class="info-card">
-            <div class="card-body">
-                <h1 class="pet-name">Thor</h1>
-                <p class="pet-breed">Bulldog Francês • 3 Anos</p>
+        <div class="info">
+            <div class="info-box">
+                <h1 id="pet-name">...</h1>
+                <p id="pet-desc">...</p>
                 
-                <div class="tags-container">
-                    <div class="tag"><i class="fa-solid fa-venus-mars"></i> Macho</div>
-                    <div class="tag"><i class="fa-solid fa-weight-hanging"></i> 12kg</div>
-                    <div class="tag alert"><i class="fa-solid fa-pills"></i> Toma Remédio</div>
+                <div id="alert-msg" class="alert-box">
+                    <i class="fa-solid fa-notes-medical"></i> <span id="msg-text"></span>
                 </div>
+
+                <div style="margin-top: 20px; text-align: left;">
+                    <p style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: #b2bec3;">Responsável</p>
+                    <p id="owner-name" style="font-size: 16px; color: #2d3436; font-weight: bold;">...</p>
+                </div>
+
+                <br>
+                <a id="btn-zap" href="#" class="btn zap"><i class="fa-brands fa-whatsapp"></i> AVISAR NO WHATSAPP</a>
+                <a id="btn-call" href="#" class="btn call"><i class="fa-solid fa-phone"></i> LIGAR AGORA</a>
             </div>
         </div>
-
-        <div class="details-section">
-            
-            <div class="owner-message">
-                "Olá! Se você me encontrou, por favor entre em contato com meus pais. Eu sou dócil, mas tenho medo de carros. Obrigado por cuidar de mim! ❤️"
-            </div>
-
-            <div class="detail-item">
-                <div class="icon-box"><i class="fa-solid fa-user-shield"></i></div>
-                <div class="detail-text">
-                    <h4>Responsável</h4>
-                    <p>Julio & Ashley</p>
-                </div>
-            </div>
-
-            <div class="detail-item">
-                <div class="icon-box"><i class="fa-solid fa-location-dot"></i></div>
-                <div class="detail-text">
-                    <h4>Moro em</h4>
-                    <p>Jardim Paulista, SP</p>
-                </div>
-            </div>
-
-            <div class="detail-item">
-                <div class="icon-box"><i class="fa-solid fa-user-doctor"></i></div>
-                <div class="detail-text">
-                    <h4>Veterinário</h4>
-                    <p>Dr. Silva (11) 98888-0000</p>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="action-bar">
-            <a href="https://wa.me/5511999999999?text=Olá!%20Encontrei%20o%20Thor.%20Pode%20me%20retornar?" class="btn btn-whats">
-                <i class="fa-brands fa-whatsapp"></i> WhatsApp
-            </a>
-            <a href="tel:5511999999999" class="btn btn-call">
-                <i class="fa-solid fa-phone"></i> Ligar Agora
-            </a>
-        </div>
-
     </div>
 
+    <script>
+        // A Mágica da Ashley: Ler URL Parameters
+        const params = new URLSearchParams(window.location.search);
+
+        // Função segura para decodificar (caso venha caracteres estranhos)
+        const get = (id) => params.get(id) || "";
+
+        // Preencher os dados
+        if(get('nome')) document.getElementById('pet-name').innerText = get('nome');
+        if(get('raca')) document.getElementById('pet-desc').innerText = get('raca') + (get('sexo') ? " • " + get('sexo') : "");
+        if(get('dono')) document.getElementById('owner-name').innerText = get('dono');
+        
+        // Foto (Se vier link ou base64)
+        if(get('foto')) document.getElementById('pet-img').src = get('foto');
+
+        // Mensagem de Alerta (Só mostra se tiver)
+        if(get('msg')) {
+            document.getElementById('msg-text').innerText = get('msg');
+            document.getElementById('alert-msg').style.display = 'block';
+        }
+
+        // Botões
+        const zapNum = get('zap').replace(/\D/g, ''); // Limpa numero
+        if(zapNum) {
+            document.getElementById('btn-call').href = `tel:55${zapNum}`;
+            document.getElementById('btn-zap').href = `https://wa.me/55${zapNum}?text=Olá!%20Encontrei%20o%20${get('nome') || 'seu pet'}!`;
+        }
+    </script>
 </body>
 </html>
