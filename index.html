@@ -10,136 +10,41 @@
         :root { --primary: #FF4757; --dark: #2f3542; --bg: #f1f2f6; }
         body { background: var(--bg); font-family: 'Inter', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 450px; background: white; border-radius: 24px; padding: 30px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        
-        /* Estilos do Form */
-        .step { display: none; }
-        .step.active { display: block; animation: fadeIn 0.5s; }
         h2 { text-align: center; color: var(--dark); margin-bottom: 20px; }
         .input-group { margin-bottom: 15px; }
         label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #57606f; }
-        input, textarea, select { width: 100%; padding: 14px; border: 1px solid #dfe4ea; border-radius: 12px; font-size: 15px; background: #fdfdfd; box-sizing: border-box; }
+        input, textarea { width: 100%; padding: 14px; border: 1px solid #dfe4ea; border-radius: 12px; font-size: 15px; background: #fdfdfd; box-sizing: border-box; }
         .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: 800; font-size: 16px; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-sec { background: #dfe4ea; color: var(--dark); margin-top: 10px; }
-
-        /* Preview Card (Miniatura) */
-        .preview-card { background: #fff; border: 1px solid #eee; border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-        .p-photo { width: 100%; height: 250px; object-fit: cover; background: #eee; }
-        .p-info { padding: 20px; text-align: center; }
-        .p-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; margin-bottom: 10px; }
-        
-        /* QR Mockup */
-        .qr-mockup { text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 16px; border: 2px dashed #dcdde1; }
-        .qr-mockup img { width: 120px; mix-blend-mode: multiply; }
-        .qr-desc { font-size: 12px; color: #747d8c; margin-top: 10px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .step { display: none; }
+        .step.active { display: block; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        
         <div id="step1" class="step active">
             <h2><i class="fa-solid fa-paw"></i> Dados do Pet</h2>
-            
-            <div class="input-group">
-                <label>FOTO DO PET</label>
-                <input type="file" id="foto" accept="image/*" onchange="previewImage()">
-            </div>
             <div class="input-group"><label>NOME DO PET</label><input type="text" id="nome_pet" placeholder="Ex: Thor"></div>
             <div class="input-group"><label>RAÇA / COR</label><input type="text" id="raca" placeholder="Ex: Vira-lata caramelo"></div>
             <div class="input-group"><label>SEU NOME (DONO)</label><input type="text" id="nome_dono" placeholder="Seu nome"></div>
             <div class="input-group"><label>WHATSAPP (DDD+NUMERO)</label><input type="tel" id="whatsapp" placeholder="11999999999"></div>
             <div class="input-group"><label>MENSAGEM DE ALERTA</label><textarea id="mensagem" rows="2" placeholder="Ex: Tenho medo de fogos..."></textarea></div>
-            <div class="input-group"><label>SEU E-MAIL (Para receber o QR)</label><input type="email" id="email" placeholder="email@exemplo.com"></div>
-
-            <button class="btn btn-primary" onclick="goToPreview()">GERAR PREVIEW <i class="fa-solid fa-arrow-right"></i></button>
-        </div>
-
-        <div id="step2" class="step">
-            <h2>Confirme os Dados</h2>
-            
-            <div class="preview-card">
-                <div style="position: relative;">
-                    <img id="prev-img" class="p-photo">
-                    <div style="position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: #FF4757; color: white; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">ME PERDI</div>
-                </div>
-                <div class="p-info">
-                    <h2 id="prev-nome" style="margin: 0;">Nome</h2>
-                    <p id="prev-desc" style="color: #777; margin: 5px 0;">Raça</p>
-                    <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; font-size: 13px; margin-top: 10px;">
-                        <i class="fa-solid fa-triangle-exclamation"></i> <span id="prev-msg">Alerta</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="qr-mockup">
-                <p style="font-size: 14px; font-weight: bold; margin-bottom: 10px;">Seu QR Code ficará assim:</p>
-                <img id="qr-preview" src="">
-                <p class="qr-desc">Apontando para: <strong>rg-pet.com/thor</strong></p>
-            </div>
-
             <button class="btn btn-primary" id="btn-send" onclick="sendData()">CONFIRMAR E RECEBER <i class="fa-solid fa-check"></i></button>
-            <button class="btn btn-sec" onclick="backToForm()">Voltar e Editar</button>
         </div>
 
-        <div id="step3" class="step" style="text-align: center; padding: 40px 0;">
+        <div id="step2" class="step" style="text-align: center; padding: 40px 0;">
             <i class="fa-regular fa-circle-check" style="font-size: 60px; color: #2ED573; margin-bottom: 20px;"></i>
             <h2>Tudo Certo!</h2>
-            <p style="color: #666;">Seu RG Digital foi criado.</p>
-            <p><strong>Verifique seu WhatsApp e E-mail</strong> em 1 minuto para pegar o QR Code oficial.</p>
+            <p>Seu RG Digital foi gerado.</p>
+            <p><strong>Verifique seu WhatsApp</strong> em 1 minuto para pegar o QR Code.</p>
         </div>
-
     </div>
 
     <script>
-        // *** CONFIGURAÇÃO ***
-        // Coloque aqui o seu Webhook do Make (o link https://...)
-        const MAKE_WEBHOOK = "https://hook.us1.make.com/6380jr698hnyx1pkc4tour4bdq6zxt2x"; 
+        // *** SEU WEBHOOK NOVO AQUI ***
+        const MAKE_WEBHOOK = "https://hook.us1.make.com/7d13aekm6qci4rqnpzpnp884i46qatpm"; 
 
-        let base64String = "";
-
-        // 1. Processar Foto
-        function previewImage() {
-            const file = document.getElementById('foto').files[0];
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                base64String = reader.result;
-                document.getElementById('prev-img').src = base64String;
-            }
-            if(file) reader.readAsDataURL(file);
-        }
-
-        // 2. Navegação (Form -> Preview)
-        function goToPreview() {
-            // Pega valores
-            const nome = document.getElementById('nome_pet').value;
-            const zap = document.getElementById('whatsapp').value;
-            
-            if(!nome || !zap) { alert("Preencha pelo menos Nome e WhatsApp!"); return; }
-
-            // Preenche o Preview
-            document.getElementById('prev-nome').innerText = nome;
-            document.getElementById('prev-desc').innerText = document.getElementById('raca').value;
-            document.getElementById('prev-msg').innerText = document.getElementById('mensagem').value || "Sem alertas médicos.";
-
-            // Gera Mockup do QR Code (Apenas visual, com dados de texto)
-            // Note: Não colocamos a foto na URL do QR Code de preview pra não quebrar, só texto.
-            const qrData = `https://ashleymasterbr.github.io/pets/template.html?nome=${encodeURIComponent(nome)}&zap=${zap}`;
-            document.getElementById('qr-preview').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
-
-            // Troca de tela
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
-        }
-
-        function backToForm() {
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('step1').classList.add('active');
-        }
-
-        // 3. Enviar para o Make
         function sendData() {
             const btn = document.getElementById('btn-send');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
@@ -150,9 +55,7 @@
                 raca: document.getElementById('raca').value,
                 nome_dono: document.getElementById('nome_dono').value,
                 whatsapp: document.getElementById('whatsapp').value,
-                mensagem: document.getElementById('mensagem').value,
-                email_cliente: document.getElementById('email').value,
-                imagem_base64: base64String // Manda a foto pesada pro Make resolver
+                mensagem: document.getElementById('mensagem').value
             };
 
             fetch(MAKE_WEBHOOK, {
@@ -161,16 +64,20 @@
                 body: JSON.stringify(payload)
             })
             .then(res => {
-                document.getElementById('step2').classList.remove('active');
-                document.getElementById('step3').classList.add('active');
+                if(res.ok) {
+                    document.getElementById('step1').classList.remove('active');
+                    document.getElementById('step2').classList.add('active');
+                } else {
+                    throw new Error('Erro no Make');
+                }
             })
             .catch(err => {
-                alert("Erro ao enviar. Tente novamente.");
+                alert("Erro ao enviar. Verifique sua internet ou tente novamente.");
                 btn.innerHTML = 'CONFIRMAR E RECEBER';
                 btn.disabled = false;
+                console.error(err);
             });
         }
     </script>
-
 </body>
 </html>
